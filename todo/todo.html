@@ -7,15 +7,18 @@
     <button onclick="addTodo()"> Add Todo</button>
     <script>
       let todos = ['Get groceries', 'Wash car', 'Make dinner'];
-      todos.forEach(function (todoTitle) {
+      function displayToDo(){
+        todos.forEach(function (todoTitle) {
         let element = document.createElement('div');
         element.innerText = todoTitle;
         document.body.appendChild(element);
       });
+      }
       function addTodo(todo){
         let textbox = document.getElementById('todo-title');
         let title = textbox.value;
         todos.push(title);
+        displayToDo();
       }
     </script>    
   </body>
