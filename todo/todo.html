@@ -7,6 +7,7 @@
     <button onclick="addTodo()"> Add Todo</button>
     <script>
       let todos = ['Get groceries', 'Wash car', 'Make dinner'];
+      displayToDo();
       function displayToDo(){
         todos.forEach(function (todoTitle) {
         let element = document.createElement('div');
