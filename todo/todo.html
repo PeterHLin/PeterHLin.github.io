@@ -3,23 +3,71 @@
   <head>
   </head>
   <body>
+    <input id="todo-date" type="date" />
     <input id="todo-title" type="text"/>
     <button onclick="addTodo()"> Add Todo</button>
+    <div id="toDoList"></div>
     <script>
-      let todos = ['Get groceries', 'Wash car', 'Make dinner'];
-      displayToDo();
-      function displayToDo(){
-        todos.forEach(function (todoTitle) {
-        let element = document.createElement('div');
-        element.innerText = todoTitle;
-        document.body.appendChild(element);
+      let id_count = 3;
+      let todos = [
+      {
+        title: 'Get groceries',
+        dueDate: '2021-10-04',
+        id: 0
+      },
+      {
+        title: 'Wash car',
+        dueDate: '2021-10-05',
+        id: 1
+      },
+      {
+        title: 'Make dinner',
+        dueDate: '2021-10-06',
+        id: 2
+      }];
+
+      render();
+      function render(){
+        document.getElementById('toDoList').innerHTML = " ";
+        todos.forEach(function (todo) {
+        const element = document.createElement('div');
+        element.innerText = todo.title + " " + todo.dueDate;
+        const delete_button = document.createElement('button');
+        delete_button.innerText = 'Delete';
+        delete_button.style = 'margin-left: 10px;';
+        delete_button.id = todo.id;
+        delete_button.onclick = deleteToDo;
+        element.appendChild(delete_button);
+        const to_do_list = document.getElementById("toDoList");
+        to_do_list.appendChild(element);
       });
       }
+
+      function deleteToDo(event){
+        const deleteButton = event.target;
+        const idToDelete = parseInt(deleteButton.id);
+        todos = todos.filter(function (todo){
+          if(todo.id == idToDelete)
+          {
+            return false;
+          }else{
+            return true;
+          }
+        });
+        render();
+      }
+
       function addTodo(todo){
-        let textbox = document.getElementById('todo-title');
-        let title = textbox.value;
-        todos.push(title);
-        displayToDo();
+        const textbox = document.getElementById('todo-title');
+        const title = textbox.value;
+        const datebox = document.getElementById('todo-date');
+        const date = datebox.value;
+        todos.push({
+          title: title,
+          dueDate: date,
+          id: id_count});
+        id_count+=1;
+        render();
       }
     </script>    
   </body>
