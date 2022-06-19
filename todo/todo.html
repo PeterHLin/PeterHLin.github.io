@@ -8,25 +8,59 @@
     <button onclick="addTodo()"> Add Todo</button>
     <div id="toDoList"></div>
     <script>
+      //Model
       let id_count = 3;
-      let todos = [
+      let todos;
+      const savedtoDo = JSON.parse(localStorage.getItem('todos'));
+      if (Array.isArray(savedtoDo)){
+        todos = savedtoDo;
+      } else
       {
-        title: 'Get groceries',
-        dueDate: '2021-10-04',
-        id: 0
-      },
-      {
-        title: 'Wash car',
-        dueDate: '2021-10-05',
-        id: 1
-      },
-      {
-        title: 'Make dinner',
-        dueDate: '2021-10-06',
-        id: 2
-      }];
-
+        todos = [
+        {
+          title: 'Get groceries',
+          dueDate: '2021-10-04',
+          id: 0
+        },
+        {
+          title: 'Wash car',
+          dueDate: '2021-10-05',
+          id: 1
+        },
+        {
+          title: 'Make dinner',
+          dueDate: '2021-10-06',
+          id: 2
+        }];
+      }
       render();
+      
+      // Create a todo
+      function createTodo(title, date){
+        todos.push({
+          title: title,
+          dueDate: date,
+          id: id_count});
+        id_count+=1;
+        saveToDo();
+      }
+      // Delete a todo
+      function delete_to_do(delete_id){
+        todos = todos.filter(function (todo){
+          if(todo.id == delete_id)
+          {
+            return false;
+          }else{
+            return true;
+          }
+        });
+        saveToDo();
+      }
+      function saveToDo()
+      {
+        localStorage.setItem('todos',JSON.stringify(todos));
+      }
+      //View
       function render(){
         document.getElementById('toDoList').innerHTML = " ";
         todos.forEach(function (todo) {
@@ -43,17 +77,11 @@
       });
       }
 
+      //Controller
       function deleteToDo(event){
         const deleteButton = event.target;
         const idToDelete = parseInt(deleteButton.id);
-        todos = todos.filter(function (todo){
-          if(todo.id == idToDelete)
-          {
-            return false;
-          }else{
-            return true;
-          }
-        });
+        delete_to_do(idToDelete);
         render();
       }
 
@@ -62,11 +90,7 @@
         const title = textbox.value;
         const datebox = document.getElementById('todo-date');
         const date = datebox.value;
-        todos.push({
-          title: title,
-          dueDate: date,
-          id: id_count});
-        id_count+=1;
+        createTodo(title, date);
         render();
       }
     </script>    
